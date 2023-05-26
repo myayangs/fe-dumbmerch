@@ -10,7 +10,7 @@ pipeline {
     agent any
       post{
 		    always{
-			 discordSend description: "**Build:** #${env.BUILD_NUMBER}\n **Status:** ${currentBuild.currentResult}" , footer: 'made with Blade', result: currentBuild.currentResult, title: JOB_NAME, webhookURL: 'https://discord.com/api/webhooks/1111442291287142441/IE758PVExU1NC9UNp7G2bxCMaK3T8IBJk1aaSiMNxbdG_C4y5l_r_VKvqfuXsXSPUNQU'
+			 discordSend description: "**Build:** #${env.BUILD_NUMBER}\n **Status:** ${currentBuild.currentResult}" , footer: 'made with Blade', result: currentBuild.currentResult, title: ${env.JOB_NAME}, webhookURL: 'https://discord.com/api/webhooks/1111442291287142441/IE758PVExU1NC9UNp7G2bxCMaK3T8IBJk1aaSiMNxbdG_C4y5l_r_VKvqfuXsXSPUNQU'
 		}
 	}
     stages {
