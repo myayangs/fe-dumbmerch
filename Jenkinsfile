@@ -17,9 +17,9 @@ pipeline {
         stage('Repository Pull') {
             steps {
                 sshagent([cred]) {
-                    sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                  sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                         cd ${dir}
-			git checkout ${branch}
+			            git checkout ${branch}
                         git pull origin ${branch}
                         exit
                         EOF
@@ -28,10 +28,10 @@ pipeline {
             }
         }
 
-    stage('Build Image Docker') {
+        stage('Build Image Docker') {
             steps {
                 sshagent([cred]) {
-                    sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                 sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                         cd ${dir}
                         docker build -t ${imagename}:latest .
                         exit
@@ -44,7 +44,7 @@ pipeline {
         stage('Running Image in Container') {
             steps {
                 sshagent([cred]) {
-                    sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                 sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                         cd ${dir}
                         docker container stop ${imagename}
                         docker container rm ${imagename}
@@ -60,15 +60,15 @@ pipeline {
         
         stage('Push Image Docker') {
             steps {
-               sshagent([cred]) {
-			    sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
-				    docker tag ${imagename}:latest ${dockerusername}/${imagename}:latest
-				    docker image push ${dockerusername}/${imagename}:latest
-				    docker image rm ${dockerusername}/${imagename}:latest
-				    docker image rm ${imagename}:latest
-				    exit
-                    EOF
-			"""
+                sshagent([cred]) {
+			     sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+				        docker tag ${imagename}:latest ${dockerusername}/${imagename}:latest
+				        docker image push ${dockerusername}/${imagename}:latest
+				        docker image rm ${dockerusername}/${imagename}:latest
+				        docker image rm ${imagename}:latest
+				        exit
+                        EOF
+			        """
 		        }
             }
         }
