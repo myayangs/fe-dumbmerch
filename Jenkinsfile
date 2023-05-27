@@ -1,9 +1,9 @@
-def branch = "staging"
+def branch = "cicd"
 def repo = "git@github.com:myayangs/fe-dumbmerch.git"
 def cred = "appserver"
 def dir = "~/fe-dumbmerch"
 def server = "yyg@103.13.207.241"
-def imagename = "fe-dumbmerch-staging"
+def imagename = "fe-dumbmerch-cicd"
 def dockerusername = "myyngstwn"
 
 pipeline {
