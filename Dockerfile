@@ -1,10 +1,6 @@
-FROM node:16-alpine as staging
+FROM node:16-alpine
 WORKDIR /app
 COPY . .
 RUN npm install
-
-FROM node:16-alpine as production
-WORKDIR /app
-COPY --from=staging /app /app
 EXPOSE 3000
 CMD [ "npm", "start"]
