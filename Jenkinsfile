@@ -9,9 +9,10 @@ def dockerusername = "myyngstwn"
 pipeline {
     agent any
       post{
-		    always{
-             discordSend description: "**Build:** #${env.BUILD_NUMBER}\n **Status:** ${currentBuild.currentResult}", footer: 'Made by Blade', image: '', link: env.BUILD_URL, result: currentBuild.currentResult , scmWebUrl: '', thumbnail: '', title: env.JOB_NAME, webhookURL: 'https://discord.com/api/webhooks/1111442291287142441/IE758PVExU1NC9UNp7G2bxCMaK3T8IBJk1aaSiMNxbdG_C4y5l_r_VKvqfuXsXSPUNQU' 		
-        }
+       always{
+             discordSend description: "**Build:** #${env.BUILD_NUMBER}\n **Status:** ${currentBuild.currentResult}", footer: 'Made by Blade', image: '', link: env.BUILD_URL, result: currentBuild.currentResult , 
+		     scmWebUrl: '', thumbnail: '', title: env.JOB_NAME, webhookURL: 'https://discord.com/api/webhooks/1111442291287142441/IE758PVExU1NC9UNp7G2bxCMaK3T8IBJk1aaSiMNxbdG_C4y5l_r_VKvqfuXsXSPUNQU' 		
+           }
 	}
     stages {
         stage('Repository Pull') {
@@ -19,11 +20,11 @@ pipeline {
                 sshagent([cred]) {
                   sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                         cd ${dir}
-			            git checkout ${branch}
+			git checkout ${branch}
                         git pull origin ${branch}
                         exit
                         EOF
-                    """
+                     """
                 }
             }
         }
@@ -36,7 +37,7 @@ pipeline {
                         docker build -t ${imagename}:latest .
                         exit
                         EOF
-                    """
+                     """
                 }
             }
         }
@@ -53,7 +54,7 @@ pipeline {
                         docker container rm ${imagename}
                         exit
                         EOF
-                    """
+                     """
                 }
             }
         }
@@ -61,15 +62,15 @@ pipeline {
         stage('Push Image Docker') {
             steps {
                 sshagent([cred]) {
-			     sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
-				        docker tag ${imagename}:latest ${dockerusername}/${imagename}:latest
-				        docker image push ${dockerusername}/${imagename}:latest
-				        docker image rm ${dockerusername}/${imagename}:latest
-				        docker image rm ${imagename}:latest
-				        exit
+	         sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+	                docker tag ${imagename}:latest ${dockerusername}/${imagename}:latest
+		        docker image push ${dockerusername}/${imagename}:latest
+		        docker image rm ${dockerusername}/${imagename}:latest
+		        docker image rm ${imagename}:latest
+		        exit
                         EOF
-			        """
-		        }
+	             """
+		 }
             }
         }
     }
